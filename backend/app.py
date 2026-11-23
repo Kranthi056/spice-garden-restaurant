@@ -7,17 +7,11 @@ app = Flask(__name__)
 # CORS configuration
 # In development, allow localhost origins
 # In production, set FRONTEND_URL environment variable to your Netlify URL
-frontend_url = os.environ.get('FRONTEND_URL', 'http://localhost:5500')
+# frontend_url = os.environ.get('FRONTEND_URL', 'http://localhost:5500')
+CORS(app)
 
 # Allow common local development origins + production frontend
-allowed_origins = [
-    'http://localhost:5500',
-    'http://127.0.0.1:5500',
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'http://localhost:8080',
-    'http://127.0.0.1:8080',
-]
+
 
 # Add production frontend URL if set
 if frontend_url and frontend_url not in allowed_origins:
