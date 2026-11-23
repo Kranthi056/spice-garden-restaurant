@@ -3,7 +3,7 @@
 // After deploying backend to Render, replace with your Render URL
 // Example: https://spice-garden-api.onrender.com
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://spice-garden-restaurant-ohy3.onrender.com';
 
 // Fetch restaurant information
 async function fetchRestaurantInfo() {
