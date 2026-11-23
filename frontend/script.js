@@ -1,3 +1,8 @@
+
+/* ==========================================
+   API CONFIGURATION
+========================================== */
+
 const API_BASE_URL =
     "https://spice-garden-restaurant-ohy3.onrender.com";
 
