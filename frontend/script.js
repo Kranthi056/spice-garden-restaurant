@@ -1,151 +1,238 @@
-// API Base URL
-// For local development, use: http://localhost:5000
-// After deploying backend to Render, replace with your Render URL
-// Example: https://spice-garden-api.onrender.com
+const API_BASE_URL =
+    "https://spice-garden-restaurant-ohy3.onrender.com";
 
-const API_BASE_URL = 'https://spice-garden-restaurant-ohy3.onrender.com';
 
-// Fetch restaurant information
+/* ==========================================
+   FETCH RESTAURANT INFORMATION
+========================================== */
+
 async function fetchRestaurantInfo() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/restaurant`);
+        const response = await fetch(
+            `${API_BASE_URL}/api/restaurant`
+        );
+
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTP ${response.status}`);
         }
-        const data = await response.json();
-        return data;
+
+        return await response.json();
+
     } catch (error) {
-        console.error('Error fetching restaurant info:', error);
+        console.error("Restaurant API error:", error);
         return null;
     }
 }
 
-// Fetch menu information
+
+/* ==========================================
+   FETCH MENU
+========================================== */
+
 async function fetchMenu() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/menu`);
+        const response = await fetch(
+            `${API_BASE_URL}/api/menu`
+        );
+
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTP ${response.status}`);
         }
-        const data = await response.json();
-        return data;
+
+        return await response.json();
+
     } catch (error) {
-        console.error('Error fetching menu:', error);
+        console.error("Menu API error:", error);
         return null;
     }
 }
 
-// Display restaurant info on Home page
+
+/* ==========================================
+   DISPLAY HOME PAGE
+========================================== */
+
 function displayHomePage(info, menu) {
-    // Intro
-    const introEl = document.getElementById('restaurant-intro');
+
+    const introEl = document.getElementById("restaurant-intro");
+    const hoursEl = document.getElementById("opening-hours");
+    const addressEl = document.getElementById("address");
+    const contactEl = document.getElementById("contact");
+    const menuContainer = document.getElementById("menu-container");
+
     if (introEl && info) {
-        introEl.textContent = info.introduction || 'Welcome to Spice Garden Restaurant.';
+        introEl.textContent =
+            info.introduction || "Welcome to Spice Garden Restaurant.";
     }
 
-    // Opening hours
-    const hoursEl = document.getElementById('opening-hours');
     if (hoursEl && info) {
-        hoursEl.textContent = info.opening_hours || 'Not available';
+        hoursEl.textContent =
+            info.opening_hours || "Opening hours unavailable.";
     }
 
-    // Address
-    const addressEl = document.getElementById('address');
     if (addressEl && info) {
-        addressEl.textContent = info.address || 'Not available';
+        addressEl.textContent =
+            info.address || "Address unavailable.";
     }
 
-    // Contact
-    const contactEl = document.getElementById('contact');
     if (contactEl && info) {
-        contactEl.textContent = `Phone: ${info.phone || 'N/A'}\nEmail: ${info.email || 'N/A'}`;
+        contactEl.textContent =
+            `Phone: ${info.phone || "N/A"} | Email: ${info.email || "N/A"}`;
     }
 
-    // Menu
-    const menuContainer = document.getElementById('menu-container');
-    if (menuContainer && menu && menu.dishes) {
-        menuContainer.innerHTML = '';
-        menu.dishes.forEach(dish => {
-            const item = document.createElement('div');
-            item.className = 'menu-item';
-            item.innerHTML = `
-                <img src="${dish.image}" alt="${dish.name}" onerror="this.src='https://via.placeholder.com/300x180?text=${encodeURIComponent(dish.name)}'">
-                <div class="menu-item-content">
-                    <h3>${dish.name}</h3>
-                    <p>${dish.description}</p>
-                    <p class="price">₹${dish.price}</p>
-                </div>
-            `;
-            menuContainer.appendChild(item);
-        });
-    } else if (menuContainer) {
-        menuContainer.innerHTML = '<p class="error">Unable to load menu. Please check if the backend is running.</p>';
+    if (!menuContainer) return;
+
+    menuContainer.innerHTML = "";
+
+    if (!menu || !menu.dishes || menu.dishes.length === 0) {
+        menuContainer.innerHTML =
+            '<p class="error menu-error">Our menu is temporarily unavailable. Please try again later.</p>';
+        return;
     }
+
+    menu.dishes.forEach(dish => {
+
+        const item = document.createElement("div");
+        item.className = "menu-item";
+
+        const image = document.createElement("img");
+        image.src = dish.image;
+        image.alt = dish.name || "Restaurant dish";
+        image.loading = "lazy";
+
+        image.onerror = function () {
+            this.onerror = null;
+            this.src = "https://placehold.co/600x400?text=Dish";
+        };
+
+        const content = document.createElement("div");
+        content.className = "menu-item-content";
+
+        const title = document.createElement("h3");
+        title.textContent = dish.name || "Menu item";
+
+        const description = document.createElement("p");
+        description.textContent = dish.description || "";
+
+        const price = document.createElement("p");
+        price.className = "price";
+        price.textContent = `₹${dish.price ?? 0}`;
+
+        content.appendChild(title);
+        content.appendChild(description);
+        content.appendChild(price);
+
+        item.appendChild(image);
+        item.appendChild(content);
+
+        menuContainer.appendChild(item);
+    });
 }
 
-// Display About page content
+
+/* ==========================================
+   DISPLAY ABOUT PAGE
+========================================== */
+
 function displayAboutPage(info) {
+
     if (!info) return;
 
-    const historyEl = document.getElementById('history');
+    const historyEl = document.getElementById("history");
+    const servicesEl = document.getElementById("services-list");
+    const contactEl = document.getElementById("about-contact");
+    const locationEl = document.getElementById("location");
+
     if (historyEl) {
-        historyEl.textContent = info.history || 'Our story begins with a passion for authentic Indian spices.';
+        historyEl.textContent =
+            info.history || "Our story begins with a passion for food.";
     }
 
-    const servicesEl = document.getElementById('services-list');
-    if (servicesEl && info.services) {
-        servicesEl.innerHTML = '';
-        info.services.forEach(service => {
-            const li = document.createElement('li');
-            li.textContent = service;
-            servicesEl.appendChild(li);
-        });
+    if (servicesEl) {
+        servicesEl.innerHTML = "";
+
+        if (Array.isArray(info.services)) {
+            info.services.forEach(service => {
+                const li = document.createElement("li");
+                li.textContent = service;
+                servicesEl.appendChild(li);
+            });
+        }
     }
 
-    const contactEl = document.getElementById('about-contact');
     if (contactEl) {
-        contactEl.innerHTML = `
-            <strong>Phone:</strong> ${info.phone || 'N/A'}<br>
-            <strong>Email:</strong> ${info.email || 'N/A'}
-        `;
+        contactEl.textContent =
+            `Phone: ${info.phone || "N/A"} | Email: ${info.email || "N/A"}`;
     }
 
-    const locationEl = document.getElementById('location');
     if (locationEl) {
-        locationEl.textContent = info.address || 'Location not available';
+        locationEl.textContent =
+            info.address || "Location unavailable.";
     }
 }
 
-// Initialize page based on current page
+
+/* ==========================================
+   SHOW ERROR MESSAGE
+========================================== */
+
+function showErrorMessage() {
+
+    const friendlyMessage =
+        "Restaurant information is temporarily unavailable. Please try again later.";
+
+    const introEl = document.getElementById("restaurant-intro");
+    const menuContainer = document.getElementById("menu-container");
+    const historyEl = document.getElementById("history");
+
+    if (introEl) {
+        introEl.textContent = friendlyMessage;
+        introEl.classList.add("error");
+    }
+
+    if (menuContainer) {
+        menuContainer.innerHTML =
+            `<p class="error menu-error">${friendlyMessage}</p>`;
+    }
+
+    if (historyEl) {
+        historyEl.textContent = friendlyMessage;
+        historyEl.classList.add("error");
+    }
+}
+
+
+/* ==========================================
+   INITIALIZE WEBSITE
+========================================== */
+
 async function init() {
-    const path = window.location.pathname;
-    const isAboutPage = path.includes('about.html');
+
+    const isAboutPage =
+        window.location.pathname.toLowerCase().includes("about.html");
+
+    console.log("Connecting to restaurant backend...");
 
     const info = await fetchRestaurantInfo();
-    const menu = isAboutPage ? null : await fetchMenu();
 
     if (!info) {
-        // Show error messages if API is unreachable
-        const errorMsg = 'Unable to connect to the server. Please ensure the backend is running at ' + API_BASE_URL;
-        
-        if (document.getElementById('restaurant-intro')) {
-            document.getElementById('restaurant-intro').innerHTML = `<span class="error">${errorMsg}</span>`;
-        }
-        if (document.getElementById('menu-container')) {
-            document.getElementById('menu-container').innerHTML = `<p class="error">${errorMsg}</p>`;
-        }
-        if (document.getElementById('history')) {
-            document.getElementById('history').innerHTML = `<span class="error">${errorMsg}</span>`;
-        }
+        showErrorMessage();
         return;
     }
 
     if (isAboutPage) {
         displayAboutPage(info);
     } else {
+        const menu = await fetchMenu();
         displayHomePage(info, menu);
     }
+
+    console.log("Website initialized successfully.");
 }
 
-// Run when page loads
-document.addEventListener('DOMContentLoaded', init);
+
+/* ==========================================
+   RUN WHEN PAGE LOADS
+========================================== */
+
+document.addEventListener("DOMContentLoaded", init);
