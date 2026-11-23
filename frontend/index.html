@@ -1,65 +1,79 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spice Garden Restaurant - Home</title>
+    <title>Spice Garden Restaurant</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <h1>🌿 Spice Garden</h1>
-            <p class="tagline">Authentic Flavors of India</p>
+
+<header class="navbar">
+    <div class="logo">🌶 Spice Garden</div>
+
+    <nav>
+        <a href="index.html" class="active">Home</a>
+        <a href="about.html">About</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <p class="subtitle">AUTHENTIC INDIAN CUISINE</p>
+
+        <h1>A Taste of India,<br>Made with Love</h1>
+
+        <p>
+            Experience authentic Indian flavours, aromatic spices
+            and unforgettable food made fresh every day.
+        </p>
+
+        <a href="#menu" class="btn">Explore Our Menu</a>
+    </div>
+</section>
+
+<section class="section">
+    <h2>About Our Restaurant</h2>
+
+    <div id="restaurant-intro" class="description">
+        Loading restaurant information...
+    </div>
+
+    <div class="info-grid">
+        <div class="info-card">
+            <h3>Opening Hours</h3>
+            <p id="opening-hours">Loading...</p>
         </div>
-        <nav>
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="about.html">About</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h2>Welcome to Spice Garden Restaurant</h2>
-                <p>Experience the rich aromas and authentic tastes of traditional Indian cuisine in a warm and inviting atmosphere.</p>
-            </div>
-        </section>
+        <div class="info-card">
+            <h3>Our Location</h3>
+            <p id="address">Loading...</p>
+        </div>
 
-        <section class="intro">
-            <h2>About Our Restaurant</h2>
-            <p id="restaurant-intro">Loading restaurant information...</p>
-        </section>
+        <div class="info-card">
+            <h3>Contact Us</h3>
+            <p id="contact">Loading...</p>
+        </div>
+    </div>
+</section>
 
-        <section class="menu">
-            <h2>Our Menu</h2>
-            <div id="menu-container" class="menu-grid">
-                <p>Loading menu...</p>
-            </div>
-        </section>
+<section class="section menu-section" id="menu">
+    <h2>Our Menu</h2>
+    <p class="section-subtitle">
+        Delicious dishes prepared with fresh ingredients.
+    </p>
 
-        <section class="info">
-            <div class="info-card">
-                <h3>Opening Hours</h3>
-                <p id="opening-hours">Loading...</p>
-            </div>
-            <div class="info-card">
-                <h3>Address</h3>
-                <p id="address">Loading...</p>
-            </div>
-            <div class="info-card">
-                <h3>Contact</h3>
-                <p id="contact">Loading...</p>
-            </div>
-        </section>
-    </main>
+    <div id="menu-container" class="menu-grid">
+        <p class="loading">Loading menu...</p>
+    </div>
+</section>
 
-    <footer>
-        <p>&copy; 2024 Spice Garden Restaurant. All rights reserved.</p>
-    </footer>
+<footer>
+    <p>© 2026 Spice Garden Restaurant | Made with ❤️ and spices</p>
+</footer>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
+
